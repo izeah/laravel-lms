@@ -6,6 +6,34 @@
     },
     "routes": [
         {
+            "src": "/img/(.*)",
+            "dest": "/public/img/"
+        },
+        {
+            "src": "/css/(.*)",
+            "dest": "/public/css/"
+        },
+        {
+            "src": "/frontend/(.*)",
+            "dest": "/public/frontend/"
+        },
+        {
+            "src": "/backend/(.*)",
+            "dest": "/public/backend/"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/public/js/"
+        },
+        {
+            "src": "/pdfs/(.*)",
+            "dest": "/public/pdfs/"
+        },
+        {
+            "src": "/user/(.*)",
+            "dest": "/public/user/"
+        },
+        {
             "src": "/(.*)",
             "dest": "/api/index.php"
         }
@@ -27,5 +55,6 @@
         "SESSION_DRIVER": "cookie",
         "SSR_TEMP_PATH": "/tmp/ssr",
         "NODE_PATH": "node"
-    }
+    },
+    "outputDirectory": "public"
 }
