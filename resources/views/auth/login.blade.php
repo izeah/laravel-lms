@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
     <title>Login Page</title>
 
@@ -29,13 +30,13 @@
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     <form action="{{ route('login') }}" method="POST">
                         @csrf
@@ -43,17 +44,13 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-user"></i></span>
                             </div>
-                            <input type="text"
-                                class="form-control {{ $errors->has('username') || $errors->has('email') ? 'is-invalid' : '' }}"
-                                name="login" placeholder="username or email"
-                                value="{{ old('username') ?: old('email') }}" autofocus>
+                            <input type="text" class="form-control {{ $errors->has('username') || $errors->has('email') ? 'is-invalid' : '' }}" name="login" placeholder="username or email" value="{{ old('username') ?: old('email') }}" autofocus>
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                placeholder="password" name="password" autocomplete="current-password">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="password" name="password" autocomplete="current-password">
                         </div>
                         <div class="form-group">
                             <input type="submit" value="Login" class="btn float-right btn-warning">

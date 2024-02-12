@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
 
     <title>Change Password</title>
 
@@ -29,13 +30,13 @@
                 </div>
                 <div class="card-body">
                     @if ($errors->any())
-                        <div class="alert alert-danger">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                     @endif
                     <form action="{{ route('public.updatepassword') }}" method="POST">
                         @csrf
@@ -45,22 +46,19 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control @error('current-password') is-invalid @enderror"
-                                placeholder="current password" name="current-password" autocomplete="current-password" autofocus>
+                            <input type="password" class="form-control @error('current-password') is-invalid @enderror" placeholder="current password" name="current-password" autocomplete="current-password" autofocus>
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                placeholder="new password" name="password" autocomplete="new-password">
+                            <input type="password" class="form-control @error('password') is-invalid @enderror" placeholder="new password" name="password" autocomplete="new-password">
                         </div>
                         <div class="input-group form-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fas fa-key"></i></span>
                             </div>
-                            <input type="password" class="form-control"
-                                placeholder="confirm password" name="password_confirmation" autocomplete="new-password">
+                            <input type="password" class="form-control" placeholder="confirm password" name="password_confirmation" autocomplete="new-password">
                         </div>
                         <div class="form-group">
                             <a href="{{ route('password.request') }}" class="float-left btn btn-link text-white">Forget Password?</a>
