@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        @include('public.layouts.style')
+<head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    @include('public.layouts.style')
 
-        @yield('css')
-    </head>
+    @yield('css')
+</head>
 
-    <body>
-        <div class="super_container">
-            <!-- Header -->
-            @include('public.layouts.header')
+<body>
+    <div class="super_container">
+        <!-- Header -->
+        @include('public.layouts.header')
 
-            <!-- Home -->
-            @yield('slider')
+        <!-- Home -->
+        @yield('slider')
 
-            @yield('content')
+        @yield('content')
 
-            @include('public.layouts.footer')
-        </div>
+        @include('public.layouts.footer')
+    </div>
 
-        @include('public.layouts.script')
+    @include('public.layouts.script')
 
-        @yield('js')
-    </body>
+    @yield('js')
+</body>
+
 </html>

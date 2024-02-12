@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
     @include('admin.layouts.head')
 </head>
 
@@ -18,4 +19,5 @@
     </div>
     @include('admin.layouts.script')
 </body>
+
 </html>
