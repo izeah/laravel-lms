@@ -92,10 +92,10 @@ class PublicController extends Controller
 
     public function books(Request $request)
     {
-        $books = Item::with('category')->where('type', 'book')
+        $data['books'] = Item::with('category')->where('type', 'book')
             ->where('disabled', '0')->orderBy('created_at', 'DESC')
             ->get()->sortBy('category.name');
-        $categories = Category::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
 
         if ($request->ajax()) {
             $param = $request->query('category');
@@ -109,31 +109,29 @@ class PublicController extends Controller
             }
 
             $data['books'] = $books;
-            $data['categories'] = $categories;
             $result = View::make('public.books', $data)->renderSections()['data'];
 
             return response()->json($result);
         }
 
-        return view('public.books', compact('books', 'categories'));
+        return view('public.books', $data);
     }
 
     public function bookDetail($id)
     {
-        $book = Item::where('type', 'book')->where('id', $id)->where('disabled', '0')->firstOrFail();
-        $borrowed = IssueItem::where('book_id', $id)->where('status', 'BORROW')->count();
-        $relatedBooks = Item::where('type', 'book')->where('category_id', $book->category_id)
+        $data['book'] = Item::where('type', 'book')->where('id', $id)->where('disabled', '0')->firstOrFail();
+        $data['borrowed'] = IssueItem::where('book_id', $id)->where('status', 'BORROW')->count();
+        $data['relatedBooks'] = Item::where('type', 'book')->where('category_id', $data['book']->category_id)
             ->where('id', '<>', $id)->where('disabled', '0')->orderBy('created_at', 'DESC')->get();
-
-        return view('public.bookDetail', compact('book', 'relatedBooks', 'borrowed'));
+        return view('public.bookDetail', $data);
     }
 
     public function ebooks(Request $request)
     {
-        $ebooks = Item::with('category')->where('type', 'e-book')
+        $data['ebooks'] = Item::with('category')->where('type', 'e-book')
             ->where('disabled', '0')->orderBy('created_at', 'DESC')
             ->get()->sortBy('category.name');
-        $categories = Category::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
 
         if ($request->ajax()) {
             $param = $request->query('category');
@@ -146,35 +144,32 @@ class PublicController extends Controller
                     ->where('category_id', $param)->orderBy('created_at', 'DESC')->get()->sortBy('category.name');
             }
 
-            $result = view('public.ebooks', compact('ebooks', 'categories'))->renderSections()['data'];
+            $result = view('public.ebooks', $data)->renderSections()['data'];
 
             return response()->json($result);
         }
 
-        return view('public.ebooks', compact('ebooks', 'categories'));
+        return view('public.ebooks', $data);
     }
 
     public function ebookDetail($id)
     {
-        $ebook = Item::where('type', 'e-book')->where('id', $id)->where('disabled', '0')->firstOrFail();
-        $relatedEbooks = Item::where('type', 'e-book')->where('category_id', $ebook->category_id)
+        $data['ebook'] = Item::where('type', 'e-book')->where('id', $id)->where('disabled', '0')->firstOrFail();
+        $data['relatedEbooks'] = Item::where('type', 'e-book')->where('category_id', $data['ebook']->category_id)
             ->where('id', '<>', $id)->where('disabled', '0')->orderBy('created_at', 'DESC')->get();
-
-        return view('public.ebookDetail', compact('ebook', 'relatedEbooks'));
+        return view('public.ebookDetail', $data);
     }
 
     public function ebookRead($id)
     {
         $ebook = Item::where('id', $id)->where('disabled', '0')->firstOrFail();
-
-        return view('public.ebookRead', compact('ebook'));
+        return view('public.ebookRead', ['ebook' => $ebook]);
     }
 
     public function history()
     {
         $penalty = DB::table('penalty')->get();
-
-        return view('public.history', compact('penalty'));
+        return view('public.history', ['penalty' => $penalty]);
     }
 
     public function sendFeedback(Request $request)

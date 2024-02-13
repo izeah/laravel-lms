@@ -110,14 +110,12 @@ class PublisherController extends Controller
     public function destroy($id)
     {
         $publishers = Publisher::destroy($id);
-
         return response()->json($publishers);
     }
 
     public function deleteAllSelected(Request $request)
     {
         $publishers = Publisher::destroy($request->post('ids'));
-
         return response()->json($publishers);
     }
 }

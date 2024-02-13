@@ -164,10 +164,9 @@ class IssueController extends Controller
     public function fetchBook(Request $request)
     {
         $param = $request->query('book_id');
-        $book = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($param);
-        $borrowed = IssueItem::where('book_id', $param)->where('status', 'BORROW')->count();
-
-        return response()->json(['data' => $book, 'borrowed' => $borrowed]);
+        $data['book'] = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($param);
+        $data['borrowed'] = IssueItem::where('book_id', $param)->where('status', 'BORROW')->count();
+        return response()->json($data);
     }
 
     public function store(Request $request)
@@ -334,8 +333,7 @@ class IssueController extends Controller
     public function penaltySetting()
     {
         $penalty = DB::table('penalty')->latest('id')->first();
-
-        return view('admin.issues.penaltySetting', compact('penalty'));
+        return view('admin.issues.penaltySetting', ['penalty' => $penalty]);
     }
 
     public function penaltyUpdate(Request $request)

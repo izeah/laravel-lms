@@ -44,8 +44,7 @@ class RackController extends Controller
         }
 
         $categories = Category::orderBy('name')->get();
-
-        return view('admin.racks.index', compact('categories'));
+        return view('admin.racks.index', ['categories' => $categories]);
     }
 
     /**

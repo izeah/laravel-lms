@@ -62,10 +62,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::orderBy('name')->get()->except([1, 2]);
-        $faculties = Faculty::orderBy('name')->get();
-
-        return view('admin.users.create', compact('roles', 'faculties'));
+        $data['roles'] = Role::orderBy('name')->get()->except([1, 2]);
+        $data['faculties'] = Faculty::orderBy('name')->get();
+        return view('admin.users.create', $data);
     }
 
     /**
@@ -125,7 +124,6 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with(['role', 'faculty'])->findOrFail($id);
-
         return response()->json($user);
     }
 
@@ -134,11 +132,10 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $roles = Role::orderBy('name')->get()->except([1, 2]);
-        $faculties = Faculty::orderBy('name')->get();
-
-        return view('admin.users.edit', compact('user', 'roles', 'faculties'));
+        $data['user'] = User::findOrFail($id);
+        $data['roles'] = Role::orderBy('name')->get()->except([1, 2]);
+        $data['faculties'] = Faculty::orderBy('name')->get();
+        return view('admin.users.edit', $data);
     }
 
     /**
@@ -235,7 +232,6 @@ class UserController extends Controller
     public function changePassword($id)
     {
         $user = User::findOrFail($id);
-
         return response()->json($user);
     }
 

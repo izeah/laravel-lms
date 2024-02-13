@@ -88,7 +88,7 @@ class ItemController extends Controller
         }
 
         $books = Item::orderBy('title')->where('type', 'book')->get();
-        return view('admin.items.lostBooks.index', compact('books'));
+        return view('admin.items.lostBooks.index', ['books' => $books]);
     }
 
     public function editLostBook($id)
@@ -114,21 +114,19 @@ class ItemController extends Controller
 
     public function bookCreate()
     {
-        $authors = Author::orderBy('name')->get();
-        $categories = Category::orderBy('name')->get();
-        $publishers = Publisher::orderBy('name')->get();
-        $racks = Rack::orderBy('position')->get();
-
-        return view('admin.items.books.create', compact('authors', 'categories', 'publishers', 'racks'));
+        $data['authors'] = Author::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['publishers'] = Publisher::orderBy('name')->get();
+        $data['racks'] = Rack::orderBy('position')->get();
+        return view('admin.items.books.create', $data);
     }
 
     public function ebookCreate()
     {
-        $authors = Author::orderBy('name')->get();
-        $categories = Category::orderBy('name')->get();
-        $publishers = Publisher::orderBy('name')->get();
-
-        return view('admin.items.ebooks.create', compact('authors', 'categories', 'publishers'));
+        $data['authors'] = Author::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['publishers'] = Publisher::orderBy('name')->get();
+        return view('admin.items.ebooks.create', $data);
     }
 
     public function bookStore(Request $request)
@@ -267,38 +265,34 @@ class ItemController extends Controller
 
     public function bookDetail($id)
     {
-        $book = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($id);
-        $borrowed = IssueItem::where('book_id', $id)->where('status', 'BORROW')->count();
-
-        return response()->json(['data' => $book, 'borrowed' => $borrowed]);
+        $data['book'] = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($id);
+        $data['borrowed'] = IssueItem::where('book_id', $id)->where('status', 'BORROW')->count();
+        return response()->json($data);
     }
 
     public function ebookDetail($id)
     {
         $ebook = Item::with(['authors', 'category', 'publisher'])->findOrFail($id);
-
         return response()->json($ebook);
     }
 
     public function bookEdit($id)
     {
-        $book = Item::findOrFail($id);
-        $authors = Author::orderBy('name')->get();
-        $categories = Category::orderBy('name')->get();
-        $publishers = Publisher::orderBy('name')->get();
-        $racks = Rack::orderBy('position')->get();
-
-        return view('admin.items.books.edit', compact('book', 'authors', 'categories', 'publishers', 'racks'));
+        $data['book'] = Item::findOrFail($id);
+        $data['authors'] = Author::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['publishers'] = Publisher::orderBy('name')->get();
+        $data['racks'] = Rack::orderBy('position')->get();
+        return view('admin.items.books.edit', $data);
     }
 
     public function ebookEdit($id)
     {
-        $ebook = Item::findOrFail($id);
-        $authors = Author::orderBy('name')->get();
-        $categories = Category::orderBy('name')->get();
-        $publishers = Publisher::orderBy('name')->get();
-
-        return view('admin.items.ebooks.edit', compact('ebook', 'authors', 'categories', 'publishers'));
+        $data['ebook'] = Item::findOrFail($id);
+        $data['authors'] = Author::orderBy('name')->get();
+        $data['categories'] = Category::orderBy('name')->get();
+        $data['publishers'] = Publisher::orderBy('name')->get();
+        return view('admin.items.ebooks.edit', $data);
     }
 
     public function bookUpdate(Request $request, $id)
@@ -481,7 +475,7 @@ class ItemController extends Controller
         if ($item->book_cover_url <> 'default.jpg') {
             $fileName = public_path() . '/img/books/' . $item->book_cover_url;
             $fileName2 = public_path() . '/img/ebooks/' . $item->book_cover_url;
-            File::delete($fileName, $fileName2);
+            File::delete([$fileName, $fileName2]);
         }
         $pdf = public_path() . '/pdfs/' . $item->ebook_url;
         File::delete($pdf);
@@ -498,7 +492,7 @@ class ItemController extends Controller
             if ($items->book_cover_url <> 'default.jpg') {
                 $fileName = public_path() . '/img/books/' . $items->book_cover_url;
                 $fileName2 = public_path() . '/img/ebooks/' . $items->book_cover_url;
-                File::delete($fileName, $fileName2);
+                File::delete([$fileName, $fileName2]);
             }
             $pdf = public_path() . '/pdfs/' . $items->ebook_url;
             File::delete($pdf);
