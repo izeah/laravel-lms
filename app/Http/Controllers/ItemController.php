@@ -265,7 +265,7 @@ class ItemController extends Controller
 
     public function bookDetail($id)
     {
-        $data['book'] = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($id);
+        $data['data'] = Item::with(['authors', 'category', 'publisher', 'rack.category'])->findOrFail($id);
         $data['borrowed'] = IssueItem::where('book_id', $id)->where('status', 'BORROW')->count();
         return response()->json($data);
     }
